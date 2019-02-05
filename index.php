@@ -1,3 +1,51 @@
+<?php
+
+
+
+if ( isset($_POST['login'])){
+
+ $db = new SQLite3('../users.db');
+    $results = $db->query("select * from user where username = '" . addslashes($_POST['user']) . "' and password = '".addslashes($_POST['pass'])."'      ");
+$login=1;
+while ($row = $results->fetchArray()) {
+
+
+
+if ( $row['username'] == $_POST['user'] and sha1($row['password']) == sha1($_POST['pass']) ){
+setcookie("UID", $row['uid']);
+setcookie("username", $row['username']);
+setcookie("info", sha1($row['pass']));
+   header("Location: /user.php");
+die();
+
+
+}else{
+
+header("Location: /");
+die();
+
+
+
+}
+
+
+}
+
+
+if ( $login== 1 ){
+header("Location: /");
+die();
+}
+
+
+
+
+}
+
+
+
+
+?>
 <html>
 <head>
   <title>construct</title>
@@ -18,7 +66,7 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;	
-	cursor:url("http://media.giphy.com/media/xTiTnwsIlsMTguNfnq/giphy.gif");
+	cursor:url(h"ttp://media.giphy.com/media/xTiTnwsIlsMTguNfnq/giphy.gif");
  
 background:black;
  }
@@ -28,7 +76,8 @@ background:black;
 	  width:40%;
 
 	  padding:20px;
-	  box-shadow:0px 0px 20px white;
+	  background:rgba(0,0,0,.2);
+	
 	  
   }
   
@@ -50,7 +99,7 @@ background:black;
 input{
 	border:1px solid white;
 	padding:10px;
-	width:40%;
+	width:100px;
 }
 
 input:focus{
@@ -66,9 +115,32 @@ box-shadow:0px 0px 20px white;
 position:fixed;
 top:0px;
 left:0px;
+	width:100%;
 	
 	
-	
+}
+
+
+.login2{
+
+position:absolute;
+width:calc(100% - 20px);
+padding:10px;
+background:rgba(0,0,0,.2);
+text-align:right;
+
+
+}
+
+
+.logo{
+
+
+position:absolute;
+display:block;
+top:10px;
+left:10px;
+
 }
   </style>
   
@@ -83,8 +155,14 @@ left:0px;
 
 
 
-<video autoplay="" loop="" id=myvid>
-    <source src="vid/bg.mp4" type="video/mp4">
+<video autoplay loop muted id=myvid poster="vid/bg.jpg">
+
+<?php
+if (preg_match('/webkit/', $userAgent)) { 
+            ?> <source src="vid/bg.webm" type="video/webm"><?php
+        } else{?><source src="vid/bg.mp4" type="video/mp4"><?php }
+?>
+    
 
 
 
@@ -92,7 +170,27 @@ left:0px;
 
 </video>
 
+<script>
 
+document.getElementById('myvid').play();
+
+</script>
+  
+  
+  
+<div class=login2>
+
+<img src="icons/logo.png" class=logo>
+
+<form method=post>
+<input type=hidden name=login value="login">
+<input name=user id=user type=text placeholder="username" autofocus>
+<input name=pass type=password placeholder="password">
+<button type=submit>Login</button>
+</form>
+</div>
+
+  
   
   
 <table border=0 style="width:100%;height:100%;">
@@ -107,15 +205,13 @@ left:0px;
 <b><i>con &bull; struct</i></b><br> <p>philosophy of science, an ideal object, where the existence of the thing may be said to depend upon a subject's mind.</p>
 </div>
 
-<input type=text placeholder="username">
-<input type=password placeholder="password">
-<button>Login</button>
-
-
-
 </div>
 
 </td></tr>
 </table>
+
+
+
+
 </body>
 </html>
