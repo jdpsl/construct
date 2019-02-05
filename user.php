@@ -1,4 +1,23 @@
-<html lang="en">
+<?php
+
+include('include/testlogin.php');
+
+
+if ( isset($_GET["layout"])){
+$layout = file_get_contents("user/".$username."/layouts/" . basename($_GET['layout']) ) or die("Could not open layout");
+
+$layout = json_decode($layout, true);
+$layoutcount=count($layout);
+}
+
+
+
+
+
+
+
+
+?><html lang="en">
 <head>
   <meta charset="utf-8">
   <title>con &bull; struct v1</title>
@@ -11,8 +30,11 @@
   <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script src="jquery.ui.touch-punch.min.js"></script>
   <script src="//tinymce.cachefly.net/4.2/tinymce.min.js"></script>
+ <!--  <script src="//cdn.tinymce.com/4/tinymce.min.js"></script> -->
   
- 
+ <script src="js/functions.js"></script>
+
+
 <script>tinymce.init({
 	
 	  mode : "specific_textareas",
@@ -36,47 +58,8 @@ fontsize_formats: "8pt 10pt 12pt 14pt 18pt 24pt 36pt",
 });
 
 
-function save_widget(){
-	
-	
-	$('#' + $('#document-writter').val() ).html(tinyMCE.get('content').getContent());
-	
-	
-}
 
 
-
-
-function speak(amsg){
-
-
-
-
-      var msg = new SpeechSynthesisUtterance();
-      var voices = window.speechSynthesis.getVoices();
-      msg.voice = voices[2]; // Note: some voices don't support altering params
-     msg.voiceURI = 'native';
-      msg.volume = 1; // 0 to 1
-      msg.rate = 1; // 0.1 to 10
-      msg.pitch = 1; //0 to 2
-      msg.text = amsg;
-      msg.lang = 'en-US';
-
-
-      speechSynthesis.speak(msg);
-      lastSaid=amsg;
-  
-
-}
-
-jQuery.fn.center = function () {
-    this.css("position","absolute");
-    this.css("top", Math.max(0, (($(window).height() - $(this).outerHeight()) / 2) + 
-                                                $(window).scrollTop()) + "px");
-    this.css("left", Math.max(0, (($(window).width() - $(this).outerWidth()) / 2) + 
-                                                $(window).scrollLeft()) + "px");
-    return this;
-}
 
 
 </script>
@@ -101,920 +84,34 @@ jQuery.fn.center = function () {
 
 
 <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
-  <style>
-  
-  
-
-  
-  
-  html body{
-	  box-sizing: border-box;
-	  margin:0px;
-	  padding:0px;
-	  position:fixed;
-	  height:100%; 
-	  width:100%;
-	  font-family: 'Montserrat', sans-serif;
-	      -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;	
-	cursor:url("http://media.giphy.com/media/xTiTnwsIlsMTguNfnq/giphy.gif");
-	font-size:12px;
-	
-	box-sizing: border-box;
-	overflow:auto;
-	
-	
-	background-size: contain;
-	
-  }
-  
-  table{
-  color: inherit;
-  
-  
-  }
-  ::selection {
-    background-color: #000;
-    color: #fff;
-}
-
-  
- .ui-widget-content { width: 200px; height: 200px;
-
-  }
-  
-  
-  .padding{
-	  
-	  
-	  padding: 0.5em;
-	  
-	  
-  }
-  
-  .mce-btn{
-	  background:white !important;
-  }
-  .mce-panel{
-	  background-color:white !important;
-	  
-  }
-  
-  table{
-	  
-	  font-size:12px;
-  }
- #propertiess { width: 250px; height: 450px; 
- border:1px solid black;
- background:white;
- position:fixed;
  
-right:20px;
-top:50px;
-overflow-y: auto;
+ 
+ <link rel="stylesheet" href="css/style.css">
+ 
+<script>
 
 
-z-index:999;
+<?php
+  
+  if ( isset($_GET["layout"])){
+  ?>  var divcounter=  <?php
+  
+  echo ($layoutcount + 1) . ";";
+  
+  }else{
+  
+   ?>   var divcounter=1; <?php
   }
   
   
-   #propertiess:active{
-	   
-	   box-shadow:0px 0px 15px rgba(0,0,0,.5);
-	   cursor:move;
-	   
-   }
-  
-  
-  
-  
-  #draggable-editor{
-	  
-	  width:550px;
-	  height:auto;
-	  position:fixed;
-	  top:-500px;
-	  left:-500px;
-	  z-index:999;
-	  
-  }
-  
-  
-  
-  
-  
-  
-      #draggable-javascript-console{
-	  
-	  width:550px;
-	  height:auto;
-	  position:fixed;
-	  top:50px;
-	  left:150px;
-	  z-index:999;
-	  
-  }
-  
-    #draggable-code-editor{
-	  
-	  width:500px;
-	  height:auto;
-	  position:fixed;
-	  top:-500px;
-	  left:-500px;
-	  z-index:999;
-	  
-  }
-  
-    #draggable-layers{
-	  
-	  width:200px;
-	  height:auto;
-	  position:fixed;
-	  top:50px;
-	  right:300px;
-	  
-	  
-
-	  z-index:999;
-  }
-  
-  
-  .loading{
-	  
-	  width:100%;
-	  
-	  
-	  
-  }
-  
-  
-  #thelayers{
-	  
-	  max-height:300px;
-	  overflow-y:auto;
-	   list-style-type: none;
-    padding: 0px;
-    margin: 0px;
-	  
-	  
-  }
-  
-  
-  #thelayers li{
-	  
-	  padding:5px;
-	  
-  }
-  #thelayers li:nth-child(even) {background: #eee}
-#thelayers li:nth-child(odd) {background: #FFF}
-
-
-
-.currentSelection{
-	
-	border:1px solid blue;
-	
-	
-}
-  .alayeritem{
-    
-    
-   box-shadow:0px 0px 40px black; 
-    z-index:999999 !important;
-    
-  }
-  
-  </style>
-  <script>
-  var slideshow=0;
-  
-  var enable_grid = false;
-  var grid_size = 50;
-  
-  var grid_color= '#000000';
-  
-  
-
-  
-  
-  function edit_doc_from_widget(theIt){
-	  
-	  
-	  
-	    var ed = tinyMCE.get('content');
-
-    // Do you ajax call here, window.setTimeout fakes ajax call
-    ed.setProgressState(1); // Show progress
-
-        ed.setProgressState(0); // Hide progress
-        ed.setContent(  $('#' + theIt ).html()      );
-  
-
-	  $('#document-writter').val( theIt   );
-	  
-	  
-	  $('#draggable-code-editor').css('display','none');
-	  $('#draggable-editor').css('display','block');
-	  
-	  $("#draggable-editor").css({top: 50, left: 200});
-	  
-  }
-  
-  
-  function edit_code_from_widget(theIt){
-	  
-	  	  $('#draggable-editor').css('display','none');
-	  $('#draggable-code-editor').css('display','block');
-	  editor.setValue($('#' +    theIt       ).html());
-
-	  
-	  
-	   
-	   $('#code-writter').val( theIt);
-	  
-	    $("#draggable-code-editor").css({top: 50, left: 200});
-  }
-  
-  
-  
-  
-  function giveControl(theID){
-
-	  
-	  document.getElementById('file_control').value=theID;
-	   document.getElementById('draggable-files').style.display="block";
-	  
-	  
-  }
-  
-  
-  function ajax(theDIV, thePAGE, callback) {
-	  
-	   callback = callback || 'unused';
-	  
-	  document.getElementById(theDIV).innerHTML = "<img src='icons/loading.gif' class=loading>";
-	  
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-    if (xhttp.readyState == 4 && xhttp.status == 200) {
-      document.getElementById(theDIV).innerHTML = xhttp.responseText;
-	  
-
-
-		  
-	
-	  
-	  
-	  
-    }
-  }
-  xhttp.open("GET", thePAGE, true);
-  xhttp.send();
-}
-  
-  
-    function ajax_return(thePAGE) {
-	  document.getElementById(theDIV).innerHTML = "<img src='icons/loading.gif' class=loading>";
-	  
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-    if (xhttp.readyState == 4 && xhttp.status == 200) {
-      return xhttp.responseText;
-    }
-  }
-  xhttp.open("GET", thePAGE, true);
-  xhttp.send();
-}
-  
-  var divcounter=2;
-  
-  
-  
-  
-  function updateDiv(divID){
-	  document.getElementById(divID).style.left=$('#x').val();
-	   document.getElementById(divID).style.top=$('#y').val();
-	    document.getElementById(divID).style.width=$('#w').val();
-		
-		
-		
-		document.getElementById(divID).style.height=$('#h').val();
-		document.getElementById(divID).style.background=$('#bg').val();
-		document.getElementById(divID).style.border=$('#b').val();
-		
-	
-		document.getElementById(divID).style.color=$('#tc').val();
-	  
-  }
-  
-  
-  $(function() {
-	  
-	  
-	  	  
-	  
-	  
-	  $('#myrange').on("input change", function() { 
-		$('#' + $('#itemno').val() ).css( 'transform' , 'rotate( ' + $('#myrange').val() + 'deg)'  )    ;
-		$('#myrange2').val($('#myrange').val());
-});
-
-$('#myrange2').on("input change", function() { 
-		$('#' + $('#itemno').val() ).css( 'transform' , 'rotate( ' + $('#myrange2').val() + 'deg)'  ) ;
-        $('#myrange').val($('#myrange2').val());
-});
-	  
-	  
-	  
-    $( 'div[id^="draggable"]'  ).draggable();
-$( '#propertiess'  ).draggable();
-	
-	
-$( 'div[id^="tools"]'  ).draggable();
-	
-		$('div[id^="tools"]').draggable({cancel : '.CodeMirror, input, textarea, .mce-ico, select, option,#return'});
-	
-	
-	
-	
-	
-	
-	
-	
-		  $( 'div[id^="tools"]' ).mousedown(function() {
-			$(this).addClass('clicked');
-
-			});
-	
-		  $( 'div[id^="tools"]' ).mouseup(function() {
-			  
-			  if ( enable_grid == true ){
-			  		var ax = $(this).offset().left;
-					var ay = $(this).offset().top;
-					ax = Math.round(ax / grid_size) * grid_size;	
-					ay = Math.round(ay / grid_size) * grid_size;	
-					$(this).offset({ top: ay, left: ax   });
-			  }
-			  
-			 $(this).removeClass('clicked');
-
-		
-});
-	
-	
-	
-	
-	  $( 'div[id^="draggable"]' ).mousedown(function() {
-			$(this).addClass('clicked');
-			//$(this).css('box-shadow', '0px 0px 15px rgba(0,0,0,.5)');
-			$("#itemno").val(this.id);
-			
-
-			
-			
-		
-});
-	
-		  $( 'div[id^="draggable"]' ).mouseup(function() {
-			  
-			  if ( enable_grid == true ){
-			  
-			  		var ax = $(this).offset().left;
-			var ay = $(this).offset().top;
-			
-			
-		ax = Math.round(ax / grid_size) * grid_size;	
-		ay = Math.round(ay / grid_size) * grid_size;	
-
-
-		$(this).offset({ top: ay, left: ax   });
-			  
-			  }
-			  
-			  $( 'div[id^="draggable"]' ).removeClass('currentSelection');
-			  $(this).addClass('currentSelection');
-			
-			 $(this).removeClass('clicked');
-			//$(this).css('box-shadow', 'none');
-			$("#x").val($(this).offset().left);
-			$("#y").val($(this).offset().top);
-			$("#w").val($(this).width());
-			$("#h").val($(this).height());
-			$("#bg").val($(this).css("background"));
-			$("#tc").val($(this).css("color"));
-			$("#b").val($(this).css("border"));
-		
-});
-	
-	
-	
-
-	
-	$( "#propertiess input" ).change(function() {
-  updateDiv(  $('#itemno').val()  );
-});
-	
-	
-	$('div[id^="draggable"]').draggable({cancel : '.CodeMirror, input, textarea, .mce-ico, select, option,#return, #thelayers li'});
-
-	
-	
-  });
-  
-  
-  
-
-
-  
-  
-function toggleVisability(theOBJ){
-	
-	
-	var vis= theOBJ.style.display;
-	
-	if ( vis != "block" ){
-		theOBJ.style.display="block";
-		
-	}else{
-		
-			theOBJ.style.display="none";
-	}
-	
-}
-
-
-
-function toggleBar(){
-	
-	
-	var vis= document.getElementById('topbar').style.display;
-	
-	if ( vis != "block" ){
-		document.getElementById('topbar').style.display="block";
-		document.getElementById('amenu').style.display="none";
-		
-	}else{
-		
-			document.getElementById('topbar').style.display="none";
-			document.getElementById('amenu').style.display="block";
-	}
-	
-}
-
-
-function reSortItems(){
-	
-				  var curLayer=$( "#thelayers li" ).size() ;
-
-$("#thelayers li").each(function(){
-
-  
-  $('#' + $(this).html() ).css('z-index',curLayer);
-  curLayer--;
-  
-  
-    });
-	
-}
+  ?>
 
-function additem(atype){
-	
-	var tmp='onclick="giveControl(' + "'draggable" + divcounter + "');" + '"'; 
-	
-	$("#thelayers").prepend('<li>draggable' + divcounter + '</li>');
-	
-	  $( "#thelayers" ).sortable({
-        update: function( ) {
-				reSortItems();
-        }
-    });
-	
-	
-	
-		reSortItems();
-	$( '#thelayers li' ).mouseover(function() { $('#' + $(this).html()).addClass('alayeritem')           });
-		$( '#thelayers li' ).mouseout(function() { $('#' + $(this).html()).removeClass('alayeritem')           });
-	
-	
-	
-	
-	
-	
-	doList();
-	
-	$( 'body' ).append( '<div atype="'+atype+'"    class="ui-widget-content" id="draggable' + divcounter + '" style=position:fixed;top:50px;left:50px;z-index:' + divcounter + '><table border=0 width=100% style="width:100%;height:100%;font-weight:bold;"><tr><td valign=center><div align=center><a ' +  tmp  + '><img src=icons/gear.gif style="width:25%;margin-bottom:10px"><br>Setup Widget</a></div></td></tr></table></div>' );$('#draggable' + divcounter ).draggable(); divcounter++;
-	
-	
-	 $(function() {
-    $( 'div[id^="draggable"]'  ).draggable();
-$( '#propertiess'  ).draggable();
-	
-	  $( 'div[id^="draggable"]' ).mousedown(function() {
-			$(this).addClass('clicked');
-			//$(this).css('box-shadow', '0px 0px 15px rgba(0,0,0,.5)');
-			$("#itemno").val(this.id);
-			
-	
-			
-			
-		
-});
-	
-		  $( 'div[id^="draggable"]' ).mouseup(function() {
-			$(this).removeClass('clicked');
-			
-			
-			  if ( enable_grid == true ){
-			  
-			  		var ax = $(this).offset().left;
-			var ay = $(this).offset().top;
-			
-			
-	ax = Math.round(ax / grid_size) * grid_size;	
-		ay = Math.round(ay / grid_size) * grid_size;	
-
-
-
-		$(this).offset({ top: ay, left: ax   });
-			  
-			  }
-		  $( 'div[id^="draggable"]' ).removeClass('currentSelection');
-			  $(this).addClass('currentSelection');
-			
-			 $(this).removeClass('clicked');
-			//$(this).css('box-shadow', 'none');
-			$("#x").val($(this).offset().left);
-			$("#y").val($(this).offset().top);
-			$("#w").val($(this).width());
-			$("#h").val($(this).height());
-			$("#bg").val($(this).css("background"));
-			$("#tc").val($(this).css("color"));
-			$("#b").val($(this).css("border"));
-			
-		
-});
-	
-	
-	
-
-	
-	$( "input" ).change(function() {
-  updateDiv(  $('#itemno').val()  );
-});
-	
-	
-  });
-  
-  switch(atype){
-	  
-	  
-	  case "div":
-	  
-	  $('#draggable-files').css('display','block');
-	  
-	  
-	  
-	 $('#file_control').val('draggable' + (divcounter - 1));
-	  break;
-	  
-	  
-  }
-  
-  
-  
-  return divcounter - 1;
-	
-}
-
-
-
-function delete_item(deleteMe){
-	
-	if (! isNaN(deleteMe.replace('draggable','')       )) {
-	
-	
-	var test = confirm('Are you sure you want to remove this item?');
-	if ( test ){
-	$( '#' + deleteMe ).remove();
-	$("#draggable-layers li:contains('"+deleteMe+"')").remove();
-	}
-	
-	
-	
-	
-	
-	
-	}
-	
-}
-
-
-
-function start_editor(id){
-    CodeMirror.fromTextArea(id, {
-  lineNumbers: true,
-          mode: "text/javascript",
-      matchBrackets: true
-    });
-}
-
-
-
-function showHelp(){
-	
-	
-	$('#draggable-examples').css('display','block');
-
-	$('#draggable-examples').css('top','50');
-	$('#draggable-examples').css('left','700');
-	
-
-	
-	
-}
-
-
-
-
-function form_to_php(divId){
-
-var method='GET';
-$("#" + divId + "  form").each(function() {
- method=$(this).attr('method')
-});
-var tmp="";
-$("#" + divId + "  input").each(function() {
-  tmp= tmp + "$_" + method + "['"  + $(this).attr('name') + "']\n"
-});
-$("#" + divId + "  textarea").each(function() {
-  tmp= tmp + "$_" + method + "['" + $(this).attr('name')  + "']\n"
-});
-return ('<textarea style="width:100%"><\?php extract($_' + method + ');' + " ?>\n" + tmp + '</textarea>');
-
-
-
-
-}
-  </script>
-  
-  <style>
-  
-  .topbar{
-	  z-index:9999999999999;
-	  position:fixed;
-	  top:0px;
-	  left:0px;
-	  width:100%;
-	  height:45px;
-	  background:rgba(255,255,255,.8);
-	  color:white;
-	  box-shadow:0px 0px 5px rgba(0,0,0,.8);
-	  
-  }
-  
-  td input{
-	  width:100px;
-	  font-size:12px;
-	  
-  }
-  
-  #draggable-jod{
-	  width:450px;
-
-	  height:400px;
-	  z-index:999;
-	  
-  }
-  
-  #draggable-files{
-	  
-	  	  width:550px;
-	
-	  min-height:400px;
-	  max-height:75%;
-	  overflow-y:auto;
-	  position:fixed;
-		top:50px;
-		left:200px;
-	  z-index:999;
-	  
-  }
-  
-  
-  #draggable-jod{
-	position:fixed;
-		top:50px;
-		left:50px;
-
-	  
-  }
-  
-  #draggable-tools{
-	  
-	  
-	  	  	  width:100px;
-
-	  height:400px;
-	  position:fixed;
-		top:50px;
-		left:20px;
-	  overflow-y: auto;
-	  z-index:999;
-  }
-  
+</script>
   
-  .tool-icon{
-	  width:20px;
-	  display:inline-block;
-	  
-	  
-  }
-  
-    button{
-	  border:1px solid black;
-	  background:white;
-	  padding:5px;
-	  
-  }
-  button:hover{
-	  background:black;
-	  color:white;
-  }
-  
-
-input{
-	border:1px solid black;
-	padding:5px;
-}
-
-
-ol li{
-	
-	background:#ccc;
-	font-weight:bold;
-padding:5px;
-	
-}
-
-
-#file:nth-child(even) {background: #eee}
-#file:nth-child(odd) {background: #FFF}
-
-#file{
-	
-	list-style-type: none;
-}
-
-#file:hover{
-	
-	background: #ffffff;
-	border:1px solid black;
-
-	z-index:999;
-	}
-
-.folder{
-	width:20px;
-	margin:5px;
-	vertical-align:middle;
-}
-
-
-.fileicon{
-	width:20px;
-	margin:5px;
-	vertical-align:middle;
-	float:right;
-}
-
-#trash{
-	border-left:1px solid black;
-	margin-left:10px;
-	padding-left:5px;
-}
-#trash:hover {
-
-padding-left:0px;
-margin-left:15px;
-box-shadow:0px 0px 15px red;
-border-left:0px;
-	
-	
-}
-
-
-#insertfile:hover{
-	
-
-
-box-shadow:0px 0px 15px blue;
-	
-}
-
-
-.topicon{
-	width:25px;
-	float:right;
-	margin:5px;
-	
-}
-
-
-.clicked{
-	box-shadow:0px 0px 15px rgba(0,0,0,.8);
-	z-index:9999999999999999999;
-	
-	cursor:move;
-	
-}
-
-
-#draggable-document-properties{
-	width:550px;
-	height:auto;
-	top:50px;
-	left:200px;
-	z-index:9999999;
-	position:fixed;
-	
-}
-
-
-
-#draggable-database{
-	
-	
-	width:550px;
-	height:auto;
-	top:50px;
-	left:200px;
-	z-index:9999999;
-	position:fixed;
-	max-height:75%;
-	
-}
-
-
-
-#draggable-info{
-	
-	
-	width:550px;
-	height:auto;
-	top:50px;
-	left:200px;
-	z-index:9999999;
-	position:fixed;
-	max-height:75%;
-	background:rgba(255,255,255,.9);
-	
-}
-
-#draggable-examples{
-	
-	
-	width:550px;
-	height:auto;
-	top:-800px;
-	left:-800px;
-	z-index:9999999;
-	position:fixed;
-	max-height:75%;
-	overflow:auto;
-	
-}
-
-
-#amenu{
-	
-	
-	background:white;
-	padding:1px;
-	border-radius:30px;
-	
-}
-
-
-
-
-
-#tools-filter{
-	
-	
-	z-index:9999999999;
-}
-
-
 
-  </style>
   
 </head>
-<body>
+<body <?php if ( isset($_GET["layout"])){ echo "style='".  $layout['body'] . "'"; } ?> >
 
 
 
@@ -1197,7 +294,7 @@ function startSlideshow(currSlide){
 
  
    <img src="icons/folder.png" class=topicon onclick="toggleVisability(document.getElementById('draggable-files'))" title="my files">
-   <img src="icons/save.png" class=topicon onclick="toggleVisability(document.getElementById('draggable-files'))" title="save layout" alt="save layout">
+   <img src="icons/layout.png" class=topicon onclick="toggleVisability(document.getElementById('draggable-layout'))" title="save layout" alt="save layout">
  
 
       
@@ -1295,7 +392,7 @@ File(s)
 Controller: <input type=text id=file_control disabled>
 <hr>
 </div>
-<img src="icons/layout.png" class=tool-icon title="Layout(s)" onclick="">
+<img src="icons/layout.png" class=tool-icon title="Layout(s)" onclick="ajax('draggable-files','layouts.php');">
 <img src="icons/insert.png" class=tool-icon title="Files(s)" onclick="">
 <img src="icons/widget.png" class=tool-icon title="Widgets(s)" onclick="">
 <img src="icons/picture.png" class=tool-icon title="Image(s)">
@@ -1317,7 +414,7 @@ Controller: <input type=text id=file_control disabled>
 
 
 <?php
-$dir = "container";
+$dir = "user/" . $username . "/widgets/";
 $dh  = opendir($dir) or die("error");
 while (false !== ($filename = readdir($dh))) {
 	if ( trim($filename) != "." and trim($filename) != ".." ){
@@ -1335,7 +432,7 @@ while (false !== ($filename = readdir($dh))) {
 		<img src="icons/trash.png" class=fileicon id=trash> 
 		<img src="icons/edit.png" class=fileicon id=insertfile title="Edit Document"> 
 		<img src="icons/code.png" class=fileicon id=insertfile title="Edit Code"> 
-		<img src="icons/choose.png" class=fileicon id=insertfile onclick="ajax(document.getElementById('file_control').value, 'container/<?php echo $filename; ?>');">      
+		<img src="icons/choose.png" class=fileicon id=insertfile onclick="ajax(document.getElementById('file_control').value, '<?php echo $dir .$filename; ?>');">      
 		
 		<?php } ?>
 		
@@ -1353,6 +450,52 @@ while (false !== ($filename = readdir($dh))) {
 </div>
 
  <!-- -->
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ <!--save layout -->
+<div id="draggable-layout" class="ui-widget-content" style="display:none;">
+<div class=padding>
+<img style="float:right;width:20px;margin:5px;"  src="icons/close.png" title="close"  alt="close" onclick="document.getElementById('draggable-layout').style.display='none';">
+<img src="icons/save.png" style="width:20px;float:right;margin:5px;" title="save layout" alt="save layout" onclick="if ( $('#layout_control').val().toString() != ''   ){savelayout($('#layout_control').val().toString());}else{alert('Please Enter a Name for the Layout');}">
+
+
+<p>
+Layouts(s)
+<hr>
+</p>
+<div class=showcontrol>
+
+Layout Name: <input type=text id=layout_control <?php
+
+if ( isset($_GET['layout'])){
+
+
+echo "value='".$_GET['layout']."'";
+
+}
+
+
+?>>
+<hr>
+</div>
+
+
+<div id=layout_files>
+<?php include ('layouts.php'); ?>
+</div>
+
+</div>
+</div>
+
+ <!--end save layout-->
+ 
+ 
+ 
 <div id="draggable-jod" style="display:none;" class="ui-widget-content" >
 <div class=padding>
 <p>
@@ -1412,6 +555,13 @@ Editing: <input type=text id=code-writter value="myfile.php"> <img src="icons/ch
 <button onclick='editor.replaceSelection ("<script id= >\n"+editor.getSelection()+"\n</script>");'>script</button>
 <button onclick='editor.replaceSelection ("<br>");'>br</button>
 
+<button onclick='editor.replaceSelection ("<script src=\"js/three.js\"></script>");'>three.js</button>
+<button onclick='editor.replaceSelection ("<script src=\"js/p5/p5.js\"></script>");'>p5.js</button>
+
+
+
+
+  
 
 <hr>
 </div>
@@ -1482,6 +632,26 @@ Javascript Console
 <ul id=thelayers>
 
 
+ <?php
+if ( isset($_GET["layout"])){
+foreach(array_keys($layout) as $key){
+
+if ( $key != 'body' ){
+
+?>
+<li class="ui-sortable-handle"><?php echo $key; ?></li>
+
+
+<?php
+}
+
+
+
+}
+
+}
+?>
+
 </ul>
 
 
@@ -1491,7 +661,28 @@ Javascript Console
 </div>
 </div>
 
+<script>
 
+  $( "#thelayers" ).sortable({
+        update: function( ) {
+				reSortItems();
+        }
+    });
+	
+	
+	
+		reSortItems();
+	$( '#thelayers li' ).mouseover(function() { $('#' + $(this).html()).addClass('alayeritem')           });
+		$( '#thelayers li' ).mouseout(function() { $('#' + $(this).html()).removeClass('alayeritem')           });
+	
+	
+	
+	
+	
+	
+	doList();
+
+</script>
 
 
  <!-- -->
@@ -1609,407 +800,17 @@ Background Width:
    </script>
    <div class=padding>
     <img style="float:right;width:20px;margin:5px;"  src="icons/close.png" title="close"  alt="close" onclick="document.getElementById('draggable-examples').style.display='none';">
+    
    <p>Examples
    <hr>
+   
    </p>
-   <ol>
-   
-   <li>
-   Strings
-   <br>
-   <textarea>"evaluated string"
-   'unevaluated string'</textarea>
-   </li>
-   
-      <li>
-   variable
-   <br>
-   <textarea>var myVariable = "theValue";</textarea>
-   </li>
-   
-      <li>
-   Comments
-   <br>
-   <textarea>// Javascript and php single line comments
-/* javascript and php
-multi line */
-
-<!-- html comment -->
-
-# perl comment
-
-</textarea>
-   </li>
    
    
-  <li>
-   
-   get a form value
-   <textarea id=exp7>
-    $('#draggable2').val();
-   </textarea>
-</li>
-
-  <li>
-   
-  set a form value
-   <textarea id=exp7>
-    $('#draggable2').val('new value');
-   </textarea>
-</li>
+   <?php include('examples.php'); ?>
    
    
-   
-     <li>
-   
-   
-   get css property
-   <textarea id=exp4>
-   $('#draggable2').css('background');
-   </textarea>
-
-  </li>
-  <li>
-   
-      set a css property
-   <textarea id=exp5>
-    $('#draggable2').css('background','black');
-   </textarea>
-
-  </li>
-   
-    <li>
-   
-   set box with contents
-   <textarea id=exp7>
-    $('#draggable2').html('change the inside of box');
-   </textarea>
-</li>
-
-
-
-
-
-
-
-
-  <li>
-   
-  if statement
-   <textarea id=exp7>
-    if ( "a" == "a" ){ 
-	// do something
-	}
-   </textarea>
-</li>
-
-
-  <li>
-   
-  switch statement
-   <textarea id=exp7>
-switch (myVariable){
-	case "one":
-		// do something
-		break;
-	case 2:
-		// something else
-		break;
-	default:
-		// if not matched
-		break;
-	}</textarea>
-</li>
-
-
-
-  <li>
-   
-  for loop
-   <textarea id=exp7>
-for ( i=0; i > 10; i++ ){
-	// do something with i
-}</textarea>
-</li>
-
-
-  <li>
-   
-  while
-   <textarea id=exp7>
-var i=0;
-while ( i != 1 ){
-	// do something
-}</textarea>
-</li>
-
-
-  <li>
-   
-  search replace
-   <textarea id=exp7>
-"my string".replace("my","old");</textarea>
-</li>
-
-
-   
-   
-   <li>
-   simple animation<br>
-   <textarea id=exp1>	$( "#draggable2" ).click(function() {
-		 $( "#draggable2" ).animate({
- 			opacity: 1,     
-			left: "+=50",     
-			height: "toggle"   
-		}, 1000, function() {
-    // Animation complete.
- 		 });  	 
-    }); 
-</textarea>
- </li>
- 
- 
- 
- 
- 
- 
- 
- 
- 
- <li>
-   add a block
-   <textarea id=exp2>
-   additem();
-   </textarea>
-   
-  </li>
-  <li>
-    add a slideshow
-   <textarea id=exp3>
-   add_slideshow();
-   </textarea>
- 
-  </li>
-
-  <li>
-   
-   
-         ajax
-   <textarea id=exp6>
-    ajax('draggable2','container/cal.php');
-   </textarea>
- 
-  </li>
- 
-  <li>
-   
-  speak
-   <textarea id=exp7>
-speak("Say something out loud");</textarea>
-</li>
-
-
-
-  <li>
-   
-  key keyboard input
-   <textarea id=exp7>
-document.onkeydown = function(e) {
-    e = e || window.event;
-    var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
-    if (charCode) {
-        alert("Character typed: " + String.fromCharCode(charCode));
-    }
-};</textarea>
-</li>
-
-
-
-
-  <li>
-   
-  Animation Frame
-   <textarea id=exp7>
-var max=1000;
-var floor=10;
-var direction=0;
-var curr = 0;
-var speed = 10;
-function draw(){
-  if ( direction == 0 ){
-  $('#draggable2').css('left','+=' + speed);
-    curr= curr + speed;
-  }else{
-     $('#draggable2').css('left','-=' + speed);
-    curr= curr - speed;
-  }
-  if ( curr == floor ) direction=0;
-  if ( curr == max ) direction=1;
- window.requestAnimationFrame(draw); 
-}
-draw();</textarea>
-</li>
-
-
-
-  <li>
-   
-  Generate php from div form
-   <textarea id=exp7>
-form_to_php('draggable2');</textarea>
-</li>
-
-
-
-
-<li>
-Center object on screen
-<textarea>$('#draggable2').center();</textarea>
-</li>
-
-
-
-
-
-<li>
-Websock Client
-<textarea>websocket = new WebSocket("ws://localhost:8080");
- websocket.onopen = function(evt) {  websocket.send("hello"); };
- websocket.onmessage = function(evt) { alert(evt.data) };
- websocket.close();
- 
- /*
- websocket.onclose = function(evt) { onClose(evt) };
- websocket.onmessage = function(evt) { onMessage(evt) };
- websocket.onerror = function(evt) { onError(evt) };
-
- */</textarea>
-</li>
-
-
-
-<li>
-Websock Server
-<textarea>
-#!/usr/bin/perl
-
-  use Net::WebSocket::Server;
-
-    my $origin = 'http://straitlogic.com';
-
-    
-    print "starting...\n";
-    
-    Net::WebSocket::Server->new(
-        listen => 8080,
-        on_connect => sub {
-            my ($serv, $conn) = @_;
-            $conn->on(
-                handshake => sub {
-                    my ($conn, $handshake) = @_;
-                    $conn->disconnect() unless $handshake->req->origin eq $origin;
-                    print $handshake->req->origin;
-                    print "\n";
-                },
-                utf8 => sub {
-                    my ($conn, $msg) = @_;
-                    $_->send_utf8($msg . '<br>') for $conn->server->connections;
-                    print "sent " . $msg . "\n";
-                },
-                binary => sub {
-                    my ($conn, $msg) = @_;
-                    $_->send_binary($msg) for $conn->server->connections;
-                     print "sent binary " . $msg . "\n";
-                },
-            );
-        },
-    )->start;</textarea>
-</li>
- 
-
-<li>
-Chat Client
-<textarea>
-<input type="text" id="am">
-  <button id="myclick">Send</button>
-
-<script>
-var ws=new WebSocket("ws://localhost:8080");
-ws.onopen = function(evt){ ws.send("hello");}
-ws.onmessage = function(evt){$('#draggable2').append(evt.data);}
-
-$( "#myclick" ).click(function() {
-
-ws.send($('#am').val() );
-}); 
-</script>
-</textarea>
-</li>
- 
- 
- 
- <li>
-Local Video Camera
-<textarea>
-
-
-
-
-<div style="text-align:center;">
-  <video id="basic-stream" class="videostream" autoplay></video>
-  <p><button id="capture-button">Capture video</button> <button id="stop-button">Stop</button></p>
-</div>
-
-
-<script>
-function errorCallback(e) {
-  if (e.code == 1) {
-    alert('User denied access to their camera');
-  } else {
-    alert('getUserMedia() not supported in your browser.');
-  }
-}
-
-var video = document.querySelector('#basic-stream');
-var button = document.querySelector('#capture-button');
-var localMediaStream = null;
-
-button.addEventListener('click', function(e) {
-  if (navigator.getUserMedia) {
-    navigator.getUserMedia('video', function(stream) {
-      video.src = stream;
-      video.controls = true;
-      localMediaStream = stream;
-    }, errorCallback);
-  } else if (navigator.webkitGetUserMedia) {
-    navigator.webkitGetUserMedia({video: true}, function(stream) {
-      video.src = window.URL.createObjectURL(stream);
-      video.controls = true;
-      localMediaStream = stream;
-    }, errorCallback);
-  } else {
-    errorCallback({target: video});
-  }
-});
-                        
-document.querySelector('#stop-button').addEventListener('click', function(e) {
-  video.pause();
-  localMediaStream.stop(); 
-});
-</script>
-
-
-
-</textarea>
-</li>
- 
- 
- 
- 
- 
-
-
-</ol>
+  
    
  </div>  
    </div>
@@ -2063,6 +864,32 @@ document.querySelector('#stop-button').addEventListener('click', function(e) {
 </div>
    
    </div></div>
+ 
+ 
+ 
+ 
+ <?php
+if ( isset($_GET["layout"])){
+foreach(array_keys($layout) as $key){
+
+if ( $key != 'body' ){
+
+?>
+<div id="<?php echo $key; ?>" style="<?php echo $layout[$key]['css']; ?>">
+<?php echo $layout[$key]['html']; ?>
+</div>
+
+
+<?php
+}
+
+
+
+}
+
+}
+?>
+ 
  
  
  
